@@ -1,0 +1,20 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Backend
+backend/target/
+backend/.env.properties
+*.log
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Editors and operating systems
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

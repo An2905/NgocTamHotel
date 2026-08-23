@@ -1,0 +1,67 @@
+CREATE DATABASE IF NOT EXISTS ngoc_tam_hotel
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE ngoc_tam_hotel;
+
+CREATE TABLE room_types (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    base_price DECIMAL(12, 2) NOT NULL,
+    max_adults INT NOT NULL,
+    max_children INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_room_types_base_price CHECK (base_price >= 0),
+    CONSTRAINT chk_room_types_capacity CHECK (max_adults > 0 AND max_children >= 0)
+);
+
+CREATE TABLE rooms (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    room_number VARCHAR(20) NOT NULL UNIQUE,
+    room_type_id BIGINT NOT NULL,
+    floor_number INT NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'AVAILABLE',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_rooms_room_type
+        FOREIGN KEY (room_type_id) REFERENCES room_types (id),
+    CONSTRAINT chk_rooms_status
+        CHECK (status IN ('AVAILABLE', 'OCCUPIED', 'CLEANING', 'MAINTENANCE', 'INACTIVE'))
+);
+
+CREATE TABLE guests (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    email VARCHAR(255),
+    identity_number VARCHAR(50),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_guests_email (email),
+    UNIQUE KEY uk_guests_identity_number (identity_number)
+);
+
+CREATE TABLE bookings (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    booking_code VARCHAR(30) NOT NULL UNIQUE,
+    guest_id BIGINT NOT NULL,
+    room_id BIGINT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    adults INT NOT NULL DEFAULT 1,
+    children INT NOT NULL DEFAULT 0,
+    total_amount DECIMAL(12, 2) NOT NULL DEFAULT 0,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    notes TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_bookings_guest FOREIGN KEY (guest_id) REFERENCES guests (id),
+    CONSTRAINT fk_bookings_room FOREIGN KEY (room_id) REFERENCES rooms (id),
+    CONSTRAINT chk_bookings_dates CHECK (check_out_date > check_in_date),
+    CONSTRAINT chk_bookings_guests CHECK (adults > 0 AND children >= 0),
+    CONSTRAINT chk_bookings_total CHECK (total_amount >= 0),
+    CONSTRAINT chk_bookings_status
+        CHECK (status IN ('PENDING', 'CONFIRMED', 'CHECKED_IN', 'CHECKED_OUT', 'CANCELLED')),
+    INDEX idx_bookings_room_dates (room_id, check_in_date, check_out_date),
+    INDEX idx_bookings_guest (guest_id)
+);
+
