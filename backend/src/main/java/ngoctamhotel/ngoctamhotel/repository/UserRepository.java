@@ -21,10 +21,10 @@ public class UserRepository {
     public Optional<User> findByUsername(String username) {
         List<User> users = jdbcTemplate.query("""
                 SELECT id, username, password_hash, email, created_at
-                FROM dbo.users
+                FROM users
                 WHERE username = ?
                 """, (rs, rowNum) -> new User(
-                        rs.getObject("id", UUID.class),
+                        UUID.fromString(rs.getString("id")),
                         rs.getString("username"),
                         rs.getString("password_hash"),
                         rs.getString("email"),
@@ -37,22 +37,22 @@ public class UserRepository {
         UUID id = UUID.randomUUID();
         try {
             jdbcTemplate.update("""
-                    INSERT INTO dbo.users (id, username, password_hash, email)
+                    INSERT INTO users (id, username, password_hash, email)
                     VALUES (?, ?, ?, ?)
-                    """, id, username, passwordHash, email);
+                    """, id.toString(), username, passwordHash, email);
         } catch (DuplicateKeyException exception) {
             throw new IllegalArgumentException("Username hoặc email đã tồn tại");
         }
 
         return jdbcTemplate.queryForObject("""
                 SELECT id, username, password_hash, email, created_at
-                FROM dbo.users
+                FROM users
                 WHERE id = ?
                 """, (rs, rowNum) -> new User(
-                        rs.getObject("id", UUID.class),
+                        UUID.fromString(rs.getString("id")),
                         rs.getString("username"),
                         rs.getString("password_hash"),
                         rs.getString("email"),
-                        rs.getTimestamp("created_at").toLocalDateTime()), id);
+                        rs.getTimestamp("created_at").toLocalDateTime()), id.toString());
     }
 }

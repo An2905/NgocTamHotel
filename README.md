@@ -6,19 +6,19 @@ Monorepo gồm website đặt phòng, PMS/CMS nội bộ và API xác thực.
 
 - Backend chính: Java 17, Spring Boot 4.1, Maven, Spring JDBC, Spring Security
 - Frontend: React 19, Vite 8, React Router
-- Database: Microsoft SQL Server
+- Database: MySQL 8
 
 ## Khởi tạo database
 
-Chạy `database/scripts/sqlserver_schema.sql` bằng SQL Server Management Studio.
+Chạy `database/scripts/schema.sql` bằng MySQL Workbench hoặc MySQL CLI.
 
 Thiết lập biến môi trường trước khi chạy backend:
 
 ```powershell
 $env:DB_HOST="localhost"
-$env:DB_PORT="1433"
-$env:DB_NAME="NgocTamHotel"
-$env:DB_USERNAME="sa"
+$env:DB_PORT="3306"
+$env:DB_NAME="ngoc_tam_hotel"
+$env:DB_USERNAME="root"
 $env:DB_PASSWORD="your-password"
 $env:JWT_SECRET="replace-with-at-least-32-random-characters"
 ```
