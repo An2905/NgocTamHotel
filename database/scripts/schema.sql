@@ -4,6 +4,14 @@ CREATE DATABASE IF NOT EXISTS ngoc_tam_hotel
 
 USE ngoc_tam_hotel;
 
+CREATE TABLE IF NOT EXISTS users (
+    id CHAR(36) PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE room_types (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL UNIQUE,
@@ -64,4 +72,3 @@ CREATE TABLE bookings (
     INDEX idx_bookings_room_dates (room_id, check_in_date, check_out_date),
     INDEX idx_bookings_guest (guest_id)
 );
-
