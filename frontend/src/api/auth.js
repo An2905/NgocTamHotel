@@ -14,6 +14,13 @@ export function register(account) {
   })
 }
 
+export function updateProfile(updates) {
+  return apiRequest('/auth/update', {
+    method: 'PUT',
+    body: JSON.stringify(updates),
+  })
+}
+
 export function saveSession(auth) {
   sessionStorage.setItem('accessToken', auth.token)
   sessionStorage.setItem('currentUser', JSON.stringify({
