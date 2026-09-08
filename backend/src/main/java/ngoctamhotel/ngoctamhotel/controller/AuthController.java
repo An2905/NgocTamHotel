@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PutMapping("/update")
-    public UserResponse updateCurrentUser(Authentication authentication,
+    public AuthResponse updateCurrentUser(Authentication authentication,
             @Valid @RequestBody UpdateRequest request) {
         return authService.updateUser(authentication.getName(), request);
     }

@@ -24,11 +24,11 @@ public class UserRepository {
                 FROM users
                 WHERE username = ?
                 """, (rs, rowNum) -> new User(
-                        UUID.fromString(rs.getString("id")),
-                        rs.getString("username"),
-                        rs.getString("password_hash"),
-                        rs.getString("email"),
-                        rs.getTimestamp("created_at").toLocalDateTime()),
+                UUID.fromString(rs.getString("id")),
+                rs.getString("username"),
+                rs.getString("password_hash"),
+                rs.getString("email"),
+                rs.getTimestamp("created_at").toLocalDateTime()),
                 username);
         return users.stream().findFirst();
     }
@@ -49,37 +49,37 @@ public class UserRepository {
                 FROM users
                 WHERE id = ?
                 """, (rs, rowNum) -> new User(
-                        UUID.fromString(rs.getString("id")),
-                        rs.getString("username"),
-                        rs.getString("password_hash"),
-                        rs.getString("email"),
-                        rs.getTimestamp("created_at").toLocalDateTime()), id.toString());
+                UUID.fromString(rs.getString("id")),
+                rs.getString("username"),
+                rs.getString("password_hash"),
+                rs.getString("email"),
+                rs.getTimestamp("created_at").toLocalDateTime()), id.toString());
     }
 
-        public User update(UUID id, String username, String email, String passwordHash) {
-    try {
-        int rowsAffected = jdbcTemplate.update("""
-                UPDATE users
-                SET username = ?, email = ?, password_hash = ?
-                WHERE id = ?
-                """, username, email, passwordHash, id.toString());
+    public User update(UUID id, String username, String email, String passwordHash) {
+        try {
+            int rowsAffected = jdbcTemplate.update("""
+                    UPDATE users
+                    SET username = ?, email = ?, password_hash = ?
+                    WHERE id = ?
+                    """, username, email, passwordHash, id.toString());
 
-        if (rowsAffected == 0) {
-            throw new IllegalArgumentException("Không tìm thấy user");
+            if (rowsAffected == 0) {
+                throw new IllegalArgumentException("Không tìm thấy user");
+            }
+        } catch (DuplicateKeyException exception) {
+            throw new IllegalArgumentException("Username hoặc email đã tồn tại");
         }
-    } catch (DuplicateKeyException exception) {
-        throw new IllegalArgumentException("Username hoặc email đã tồn tại");
-    }
 
-    return jdbcTemplate.queryForObject("""
-            SELECT id, username, password_hash, email, created_at
-            FROM users
-            WHERE id = ?
-            """, (rs, rowNum) -> new User(
-                    UUID.fromString(rs.getString("id")),
-                    rs.getString("username"),
-                    rs.getString("password_hash"),
-                    rs.getString("email"),
-                    rs.getTimestamp("created_at").toLocalDateTime()), id.toString());
-}
+        return jdbcTemplate.queryForObject("""
+                SELECT id, username, password_hash, email, created_at
+                FROM users
+                WHERE id = ?
+                """, (rs, rowNum) -> new User(
+                UUID.fromString(rs.getString("id")),
+                rs.getString("username"),
+                rs.getString("password_hash"),
+                rs.getString("email"),
+                rs.getTimestamp("created_at").toLocalDateTime()), id.toString());
+    }
 }
