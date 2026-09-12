@@ -8,6 +8,6 @@ public record AuthResponse(
         long expiresIn,
         UUID userId,
         String username,
-        String email) {
+        String email,
+        String role) {
 }
-
