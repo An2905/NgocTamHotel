@@ -2,7 +2,7 @@ export async function apiRequest(path, options = {}) {
   const token = sessionStorage.getItem('accessToken')
   const baseUrl = import.meta.env.VITE_API_URL || '';
   
-  const response = await fetch(`\({baseUrl}/api\){path}`, {
+  const response = await fetch(`${baseUrl}/api${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

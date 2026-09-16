@@ -1,5 +1,7 @@
 package ngoctamhotel.ngoctamhotel.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,9 +45,15 @@ public class SecurityConfig {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(
-            @Value("${app.frontend-url:http://localhost:5173}") String frontendUrl) {
+            @Value("${app.frontend-url:http://localhost:5173}") String frontendUrls) {
+        // Hỗ trợ nhiều origins cách nhau bằng dấu phẩy
+        // Ví dụ: FRONTEND_URL=https://ten-app.vercel.app,http://localhost:5173
+        List<String> origins = java.util.Arrays.stream(frontendUrls.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(java.util.List.of(frontendUrl));
+        config.setAllowedOrigins(origins);
         config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
