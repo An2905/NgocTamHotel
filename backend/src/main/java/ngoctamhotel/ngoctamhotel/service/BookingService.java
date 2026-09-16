@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ngoctamhotel.ngoctamhotel.dto.request.BookingRequest;
 import ngoctamhotel.ngoctamhotel.dto.response.BookingResponse;
@@ -40,6 +42,7 @@ public class BookingService {
         this.paymentRepository = paymentRepository;
     }
 
+    @Transactional
     public BookingResponse createBooking(BookingRequest request) {
         // Validate dates
         if (request.checkOutDate().isBefore(request.checkInDate())
@@ -54,8 +57,8 @@ public class BookingService {
         RoomType roomType = roomTypeRepository.findById(request.roomTypeId())
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy loại phòng"));
 
-        // Find available room
-        List<Room> available = roomRepository.findAvailable(
+        // Find available room — dùng FOR UPDATE để lock row, chặn race condition overbooking
+        List<Room> available = roomRepository.findAvailableForUpdate(
                 request.checkInDate(), request.checkOutDate(), request.roomTypeId());
         if (available.isEmpty()) {
             throw new IllegalArgumentException("Không còn phòng trống cho ngày bạn chọn");
@@ -95,9 +98,7 @@ public class BookingService {
     }
 
     public List<BookingResponse> getAllBookings() {
-        return bookingRepository.findAll().stream()
-                .map(this::enrichBooking)
-                .toList();
+        return bookingRepository.findAllEnriched();
     }
 
     public List<BookingResponse> getBookingsByDateRange(LocalDate from, LocalDate to) {
@@ -114,7 +115,7 @@ public class BookingService {
         List<Booking> bookings = bookingRepository.findByDateRange(from, to);
         BigDecimal roomRevenue = bookings.stream()
                 .filter(b -> !"CANCELLED".equals(b.status()))
-                .map(Booking::totalAmount)
+                .map(b -> Objects.requireNonNullElse(b.totalAmount(), BigDecimal.ZERO))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         int total = bookings.size();
         int completed = (int) bookings.stream()

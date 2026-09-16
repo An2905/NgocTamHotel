@@ -29,7 +29,8 @@ public class RoomRepository {
                 rs.getLong("room_type_id"),
                 rs.getInt("floor_number"),
                 rs.getString("status"),
-                rs.getTimestamp("created_at").toLocalDateTime()), roomTypeId);
+                rs.getTimestamp("created_at") != null
+                    ? rs.getTimestamp("created_at").toLocalDateTime() : null), roomTypeId);
     }
 
     public int countByRoomTypeId(Long roomTypeId) {
@@ -39,9 +40,16 @@ public class RoomRepository {
     }
 
     public int countAvailableByRoomTypeId(Long roomTypeId) {
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM rooms WHERE room_type_id = ? AND status = 'AVAILABLE'",
-                Integer.class, roomTypeId);
+        // Tr\u1eeb c\u1ea3 ph\u00f2ng \u0111\u00e3 c\u00f3 booking \u0111ang active \u0111\u1ec3 hi\u1ec3n th\u1ecb \u0111\u00fang s\u1ed1 ph\u00f2ng th\u1ef1c t\u1ebf c\u00f2n tr\u1ed1ng
+        Integer count = jdbcTemplate.queryForObject("""
+                SELECT COUNT(*) FROM rooms r
+                WHERE r.room_type_id = ?
+                  AND r.status = 'AVAILABLE'
+                  AND r.id NOT IN (
+                      SELECT b.room_id FROM bookings b
+                      WHERE b.status NOT IN ('CANCELLED', 'CHECKED_OUT')
+                  )
+                """, Integer.class, roomTypeId);
         return count != null ? count : 0;
     }
 
@@ -64,7 +72,34 @@ public class RoomRepository {
                 rs.getLong("room_type_id"),
                 rs.getInt("floor_number"),
                 rs.getString("status"),
-                rs.getTimestamp("created_at").toLocalDateTime()),
+                rs.getTimestamp("created_at") != null
+                    ? rs.getTimestamp("created_at").toLocalDateTime() : null),
+                roomTypeId, checkOut, checkIn);
+    }
+
+    // Dùng trong @Transactional createBooking để lock row, chặn overbooking
+    public List<Room> findAvailableForUpdate(LocalDate checkIn, LocalDate checkOut, Long roomTypeId) {
+        return jdbcTemplate.query("""
+                SELECT r.id, r.room_number, r.room_type_id, r.floor_number, r.status, r.created_at
+                FROM rooms r
+                WHERE r.room_type_id = ?
+                  AND r.status = 'AVAILABLE'
+                  AND r.id NOT IN (
+                      SELECT b.room_id FROM bookings b
+                      WHERE b.status NOT IN ('CANCELLED', 'CHECKED_OUT')
+                        AND b.check_in_date < ? AND b.check_out_date > ?
+                  )
+                ORDER BY r.room_number
+                LIMIT 1
+                FOR UPDATE
+                """, (rs, rowNum) -> new Room(
+                rs.getLong("id"),
+                rs.getString("room_number"),
+                rs.getLong("room_type_id"),
+                rs.getInt("floor_number"),
+                rs.getString("status"),
+                rs.getTimestamp("created_at") != null
+                    ? rs.getTimestamp("created_at").toLocalDateTime() : null),
                 roomTypeId, checkOut, checkIn);
     }
 
@@ -79,7 +114,8 @@ public class RoomRepository {
                 rs.getLong("room_type_id"),
                 rs.getInt("floor_number"),
                 rs.getString("status"),
-                rs.getTimestamp("created_at").toLocalDateTime()), id);
+                rs.getTimestamp("created_at") != null
+                    ? rs.getTimestamp("created_at").toLocalDateTime() : null), id);
         return rooms.stream().findFirst();
     }
 

@@ -29,8 +29,41 @@ public class BookingController {
         return bookingService.createBooking(request);
     }
 
+    // Fix #12: Endpoint public — mask PII (SĐT + email) trước khi trả về
     @GetMapping("/{code}")
     public BookingResponse getBooking(@PathVariable String code) {
-        return bookingService.getBookingByCode(code);
+        BookingResponse full = bookingService.getBookingByCode(code);
+        return new BookingResponse(
+                full.id(),
+                full.bookingCode(),
+                full.guestName(),           // Giữ tên — khách cần biết đúng booking của mình
+                maskPhone(full.guestPhone()),
+                maskEmail(full.guestEmail()),
+                full.roomNumber(),
+                full.roomTypeName(),
+                full.checkInDate(),
+                full.checkOutDate(),
+                full.adults(),
+                full.children(),
+                full.totalAmount(),
+                full.status(),
+                full.paymentStatus(),
+                full.createdAt());
+    }
+
+    // Mask SĐT: 0912***678
+    private static String maskPhone(String phone) {
+        if (phone == null || phone.length() < 4) return "***";
+        return phone.substring(0, 4) + "***" + phone.substring(phone.length() - 3);
+    }
+
+    // Mask email: ng***@gmail.com
+    private static String maskEmail(String email) {
+        if (email == null || !email.contains("@")) return "***";
+        int at = email.indexOf('@');
+        String local = email.substring(0, at);
+        String domain = email.substring(at);
+        if (local.length() <= 2) return local.charAt(0) + "***" + domain;
+        return local.substring(0, 2) + "***" + domain;
     }
 }

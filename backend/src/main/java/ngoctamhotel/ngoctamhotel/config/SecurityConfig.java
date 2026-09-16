@@ -42,7 +42,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(@Value("${app.frontend-url}") String frontendUrl) {
+    CorsConfigurationSource corsConfigurationSource(
+            @Value("${app.frontend-url:http://localhost:5173}") String frontendUrl) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(java.util.List.of(frontendUrl));
         config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
