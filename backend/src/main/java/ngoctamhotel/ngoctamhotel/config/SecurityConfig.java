@@ -44,19 +44,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(
-            @Value("${app.frontend-url:http://localhost:5173}") String frontendUrls) {
-        // Hỗ trợ nhiều origins cách nhau bằng dấu phẩy
-        // Ví dụ: FRONTEND_URL=https://ten-app.vercel.app,http://localhost:5173
-        List<String> origins = java.util.Arrays.stream(frontendUrls.split(","))
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .toList();
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // Dùng Pattern để hỗ trợ wildcard (ví dụ: https://*.vercel.app)
-        config.setAllowedOriginPatterns(origins);
+        config.setAllowedOriginPatterns(java.util.List.of("*"));
         config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type"));
+        config.setAllowedHeaders(java.util.List.of("*"));
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
