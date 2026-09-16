@@ -53,7 +53,8 @@ public class SecurityConfig {
                 .filter(s -> !s.isEmpty())
                 .toList();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(origins);
+        // Dùng Pattern để hỗ trợ wildcard (ví dụ: https://*.vercel.app)
+        config.setAllowedOriginPatterns(origins);
         config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
