@@ -43,6 +43,7 @@ public class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     Map<String, String> internalError(Exception exception) {
         // Log nội bộ — KHÔNG trả message gốc ra ngoài
+        exception.printStackTrace(); // THÊM DÒNG NÀY ĐỂ IN LOG RA RAILWAY
         return Map.of("message", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.");
     }
 }
