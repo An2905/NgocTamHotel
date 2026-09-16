@@ -8,6 +8,6 @@ public record User(
         String username,
         String passwordHash,
         String email,
+        String role,
         LocalDateTime createdAt) {
 }
-

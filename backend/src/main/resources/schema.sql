@@ -3,5 +3,79 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
+    role VARCHAR(10) NOT NULL DEFAULT 'USER',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS room_types (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    base_price DECIMAL(12, 2) NOT NULL,
+    max_adults INT NOT NULL,
+    max_children INT NOT NULL DEFAULT 0,
+    amenities TEXT,
+    view_type VARCHAR(50) NOT NULL DEFAULT 'standard',
+    image_url VARCHAR(500),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS rooms (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    room_number VARCHAR(20) NOT NULL UNIQUE,
+    room_type_id BIGINT NOT NULL,
+    floor_number INT NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'AVAILABLE',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_rooms_room_type
+        FOREIGN KEY (room_type_id) REFERENCES room_types (id)
+);
+
+CREATE TABLE IF NOT EXISTS guests (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    email VARCHAR(255),
+    identity_number VARCHAR(50),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    booking_code VARCHAR(30) NOT NULL UNIQUE,
+    guest_id BIGINT NOT NULL,
+    room_id BIGINT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    adults INT NOT NULL DEFAULT 1,
+    children INT NOT NULL DEFAULT 0,
+    total_amount DECIMAL(12, 2) NOT NULL DEFAULT 0,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    notes TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_bookings_guest FOREIGN KEY (guest_id) REFERENCES guests (id),
+    CONSTRAINT fk_bookings_room FOREIGN KEY (room_id) REFERENCES rooms (id)
+);
+
+CREATE TABLE IF NOT EXISTS payments (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    booking_id BIGINT NOT NULL,
+    method VARCHAR(30) NOT NULL,
+    amount DECIMAL(12, 2) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    transaction_ref VARCHAR(100),
+    paid_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_payments_booking FOREIGN KEY (booking_id) REFERENCES bookings (id)
+);
+
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(30),
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

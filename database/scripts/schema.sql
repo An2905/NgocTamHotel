@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
+    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -19,6 +20,9 @@ CREATE TABLE room_types (
     base_price DECIMAL(12, 2) NOT NULL,
     max_adults INT NOT NULL,
     max_children INT NOT NULL DEFAULT 0,
+    amenities TEXT,
+    view_type VARCHAR(50) NOT NULL DEFAULT 'standard',
+    image_url VARCHAR(500),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT chk_room_types_base_price CHECK (base_price >= 0),
     CONSTRAINT chk_room_types_capacity CHECK (max_adults > 0 AND max_children >= 0)
@@ -71,4 +75,29 @@ CREATE TABLE bookings (
         CHECK (status IN ('PENDING', 'CONFIRMED', 'CHECKED_IN', 'CHECKED_OUT', 'CANCELLED')),
     INDEX idx_bookings_room_dates (room_id, check_in_date, check_out_date),
     INDEX idx_bookings_guest (guest_id)
+);
+
+CREATE TABLE payments (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    booking_id BIGINT NOT NULL,
+    method VARCHAR(30) NOT NULL,
+    amount DECIMAL(12, 2) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    transaction_ref VARCHAR(100),
+    paid_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_payments_booking FOREIGN KEY (booking_id) REFERENCES bookings (id),
+    CONSTRAINT chk_payments_method CHECK (method IN ('VNPAY', 'BANK_TRANSFER')),
+    CONSTRAINT chk_payments_status CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED')),
+    CONSTRAINT chk_payments_amount CHECK (amount >= 0)
+);
+
+CREATE TABLE contact_messages (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(30),
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
