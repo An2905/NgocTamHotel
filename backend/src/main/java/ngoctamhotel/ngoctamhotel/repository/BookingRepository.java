@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import ngoctamhotel.ngoctamhotel.dto.response.BookingResponse;
 import ngoctamhotel.ngoctamhotel.model.Booking;
 
 @Repository
@@ -100,6 +101,41 @@ public class BookingRepository {
                 rs.getString("notes"),
                 rs.getTimestamp("created_at").toLocalDateTime(),
                 rs.getTimestamp("updated_at").toLocalDateTime()));
+    }
+
+    // Fix N+1: 1 query JOIN thay vì 4 queries/booking
+    public List<BookingResponse> findAllEnriched() {
+        return jdbcTemplate.query("""
+                SELECT b.id, b.booking_code,
+                       g.full_name, g.phone, g.email,
+                       r.room_number, rt.name AS room_type_name,
+                       b.check_in_date, b.check_out_date, b.adults, b.children,
+                       b.total_amount, b.status,
+                       COALESCE(p.status, 'UNPAID') AS payment_status,
+                       b.created_at
+                FROM bookings b
+                JOIN guests g ON g.id = b.guest_id
+                JOIN rooms r ON r.id = b.room_id
+                JOIN room_types rt ON rt.id = r.room_type_id
+                LEFT JOIN payments p ON p.booking_id = b.id
+                ORDER BY b.created_at DESC
+                """, (rs, rowNum) -> new BookingResponse(
+                rs.getLong("id"),
+                rs.getString("booking_code"),
+                rs.getString("full_name"),
+                rs.getString("phone"),
+                rs.getString("email"),
+                rs.getString("room_number"),
+                rs.getString("room_type_name"),
+                rs.getDate("check_in_date").toLocalDate(),
+                rs.getDate("check_out_date").toLocalDate(),
+                rs.getInt("adults"),
+                rs.getInt("children"),
+                rs.getBigDecimal("total_amount"),
+                rs.getString("status"),
+                rs.getString("payment_status"),
+                rs.getTimestamp("created_at") != null
+                    ? rs.getTimestamp("created_at").toLocalDateTime() : null));
     }
 
     public List<Booking> findByDateRange(LocalDate from, LocalDate to) {

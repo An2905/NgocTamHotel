@@ -18,31 +18,23 @@ public class GuestRepository {
     }
 
     public Guest create(String fullName, String phone, String email, String identityNumber) {
+        // Tìm khách cũ theo SĐT trước — sĐT là định danh thực tế của khách
+        Optional<Guest> byPhone = findByPhone(phone);
+        if (byPhone.isPresent()) return byPhone.get();
+
         try {
             jdbcTemplate.update("""
                     INSERT INTO guests (full_name, phone, email, identity_number)
                     VALUES (?, ?, ?, ?)
                     """, fullName, phone, email, identityNumber);
         } catch (DuplicateKeyException exception) {
-            // Guest may already exist – find and return
-            Optional<Guest> existing = findByEmail(email);
+            // Fallback nếu vẫn có race condition
+            Optional<Guest> existing = findByPhone(phone);
             if (existing.isPresent()) return existing.get();
             throw new IllegalArgumentException("Thông tin khách đã tồn tại");
         }
 
-        List<Guest> guests = jdbcTemplate.query("""
-                SELECT id, full_name, phone, email, identity_number, created_at
-                FROM guests
-                WHERE email = ?
-                ORDER BY id DESC LIMIT 1
-                """, (rs, rowNum) -> new Guest(
-                rs.getLong("id"),
-                rs.getString("full_name"),
-                rs.getString("phone"),
-                rs.getString("email"),
-                rs.getString("identity_number"),
-                rs.getTimestamp("created_at").toLocalDateTime()), email);
-        return guests.get(0);
+        return findByPhone(phone).orElseThrow();
     }
 
     public Optional<Guest> findById(Long id) {
@@ -57,6 +49,22 @@ public class GuestRepository {
                 rs.getString("email"),
                 rs.getString("identity_number"),
                 rs.getTimestamp("created_at").toLocalDateTime()), id);
+        return guests.stream().findFirst();
+    }
+
+    public Optional<Guest> findByPhone(String phone) {
+        List<Guest> guests = jdbcTemplate.query("""
+                SELECT id, full_name, phone, email, identity_number, created_at
+                FROM guests
+                WHERE phone = ?
+                ORDER BY id DESC LIMIT 1
+                """, (rs, rowNum) -> new Guest(
+                rs.getLong("id"),
+                rs.getString("full_name"),
+                rs.getString("phone"),
+                rs.getString("email"),
+                rs.getString("identity_number"),
+                rs.getTimestamp("created_at").toLocalDateTime()), phone);
         return guests.stream().findFirst();
     }
 

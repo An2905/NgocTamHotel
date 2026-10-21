@@ -59,6 +59,11 @@ public class AuthService {
                 User current = userRepository.findByUsername(currentUsername)
                                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy user"));
 
+                // Bắt buộc xác minh mật khẩu hiện tại trước khi cho phép thay đổi
+                if (!passwordEncoder.matches(request.currentPassword(), current.passwordHash())) {
+                        throw new IllegalArgumentException("Mật khẩu hiện tại không đúng");
+                }
+
                 String newUsername = (request.username() == null || request.username().isBlank())
                                 ? current.username()
                                 : request.username().trim();
