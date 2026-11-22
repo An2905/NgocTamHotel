@@ -13,17 +13,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ngoctamhotel.ngoctamhotel.model.User;
-import ngoctamhotel.ngoctamhotel.repository.UserRepository;
+import ngoctamhotel.ngoctamhotel.repository.AdminRepository;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserRepository userRepository;
+    private final AdminRepository repo;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtService jwtService, AdminRepository repo) {
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
+        this.repo = repo;
     }
 
     @Override
@@ -32,11 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             try {
-                String username = jwtService.getValidUsername(header.substring(7));
-                User user = userRepository.findByUsername(username).orElse(null);
-                if (user != null) {
+                String token = header.substring(7);
+                String username = jwtService.getValidUsername(token);
+
+                if (repo.findByName(username).isPresent()) {
                     List<SimpleGrantedAuthority> authorities = List.of(
-                            new SimpleGrantedAuthority(user.role()));
+                            new SimpleGrantedAuthority("ADMIN"));
                     SecurityContextHolder.getContext().setAuthentication(
                             new UsernamePasswordAuthenticationToken(username, null, authorities));
                 }
@@ -46,4 +46,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
 }

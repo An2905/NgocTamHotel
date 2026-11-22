@@ -1,8 +1,11 @@
 package ngoctamhotel.ngoctamhotel.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,12 +28,30 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                        .requestMatchers("/api/rooms/**").permitAll()
-                        .requestMatchers("/api/bookings/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/admin/login").permitAll()
+                        // Khách không cần tài khoản vẫn xem, kiểm tra và tạo booking.
+                        .requestMatchers(HttpMethod.GET, "/api/rooms", "/api/check-rooms-booking").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/new-booking").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/room-holds").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/room-holds/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/bikes", "/api/bikes/availability").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/bike-bookings").permitAll()
+                        // Rooms — CHỈ cho phép xem (GET)
+                        .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
+                        // Bookings — chỉ cho tạo (POST) + tra cứu (GET)
+                        .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/bookings/**").permitAll()
+                        // Payments — tạo (POST) + xác nhận/thất bại (mô phỏng cổng thanh toán)
+                        .requestMatchers(HttpMethod.POST, "/api/payments").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/payments/webhook").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payments/booking/*").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/payments/*/confirm").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/payments/*/fail").permitAll()
+                        // Contact — gửi liên hệ
                         .requestMatchers("/api/contact").permitAll()
-                        .requestMatchers("/api/payments/**").permitAll()
+                        // Admin — yêu cầu quyền ADMIN
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        // Mọi thứ khác — phải có JWT
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -42,11 +63,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(@Value("${app.frontend-url}") String frontendUrl) {
+    CorsConfigurationSource corsConfigurationSource(
+            @Value("${app.frontend-url:http://localhost:5173}") String frontendUrls) {
+        List<String> patterns = java.util.Arrays.stream(frontendUrls.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(java.util.List.of(frontendUrl));
-        config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type"));
+        config.setAllowedOriginPatterns(patterns);
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

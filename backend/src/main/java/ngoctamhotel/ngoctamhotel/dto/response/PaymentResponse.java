@@ -2,14 +2,17 @@ package ngoctamhotel.ngoctamhotel.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record PaymentResponse(
-        Long id,
-        Long bookingId,
-        String bookingCode,
+        UUID id,
+        UUID bookingId,
         String method,
         BigDecimal amount,
         String status,
         String transactionRef,
-        LocalDateTime paidAt) {
+        LocalDateTime paidAt,
+        Long payosOrderCode,
+        String payosPaymentLinkId,
+        String checkoutUrl) {
 }
