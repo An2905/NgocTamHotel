@@ -324,7 +324,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
   align-items: center;
   padding: 140px clamp(24px, 8vw, 120px) 100px;
   color: #fff;
-  background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=85') center/cover;
+  background: url('../../Assets/images/beach_view.jpg') center/cover;
   overflow: hidden;
 }
 .hero-overlay {
@@ -491,6 +491,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 .services-preview { padding-block: 120px; }
 .services-header { margin-bottom: 50px; }
 .services-header h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; max-width: 550px; }
+.services-preview .services-header h2 { max-width: none; }
 .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
 .service-card {
   padding: 28px;
@@ -509,8 +510,68 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 .service-card h3 { font-family: 'Playfair Display', serif; font-weight: 500; margin: 16px 0 10px; font-size: 1.15rem; }
 .service-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
 .services-cta { margin-top: 40px; text-align: center; }
+.home-rental-feature { display: grid; grid-template-columns: 1.1fr .9fr; min-height: 390px; overflow: hidden; border-radius: var(--radius-xl); background: var(--brand-dark); color: #fff; }
+.home-rental-photo { min-height: 390px; background: url('https://images.unsplash.com/photo-1685101206910-0a0510a12521?auto=format&fit=crop&w=1200&q=85') center/cover; }
+.home-rental-copy { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(32px, 5vw, 70px); }
+.home-rental-copy .kicker { color: #e1c78d; }
+.home-rental-copy h3 { max-width: 440px; font-size: clamp(2rem, 3vw, 3.2rem); font-weight: 500; }
+.home-rental-copy p { max-width: 440px; margin: 20px 0 28px; color: #d5e3dc; font-size: .92rem; line-height: 1.8; }
 
 /* ── Services Page – Full Layout ── */
+.rental-page { overflow: hidden; }
+.rental-hero { position: relative; min-height: 640px; display: flex; align-items: center; background: #173d34; color: #fff; }
+.rental-hero-photo { position: absolute; inset: 0 0 0 46%; background-size: cover; background-position: center; }
+.rental-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #173d34 0%, #173d34 36%, rgba(23,61,52,.92) 49%, rgba(23,61,52,.22) 73%, rgba(23,61,52,.05) 100%); }
+.rental-hero-inner { position: relative; z-index: 1; padding-top: 120px; padding-bottom: 80px; }
+.rental-hero-copy { max-width: 560px; }
+.rental-eyebrow { display: inline-block; margin-bottom: 24px; color: #e1c78d; font-size: .72rem; font-weight: 700; letter-spacing: .22em; }
+.rental-hero h1 { max-width: 570px; font-size: clamp(3rem, 5.2vw, 5.2rem); line-height: 1.08; font-weight: 500; }
+.rental-hero-copy > p { max-width: 490px; margin-top: 26px; color: #d5e3dc; font-size: 1.02rem; line-height: 1.85; }
+.rental-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 28px; margin-top: 34px; }
+.rental-hero-actions .btn-primary { min-height: 50px; padding: 12px 22px; }
+.rental-text-link { color: #fff; font-size: .88rem; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.55); padding-bottom: 5px; }
+.rental-text-link span { margin-left: 8px; }
+.rental-hero-caption { display: flex; align-items: center; gap: 14px; margin-top: 90px; color: #e4ece7; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+.rental-caption-line { width: 44px; height: 1px; background: #c99b44; }
+.rental-intro { padding-top: 104px; padding-bottom: 100px; }
+.rental-section-heading { display: grid; grid-template-columns: 1.2fr .8fr; align-items: end; gap: 50px; margin-bottom: 48px; }
+.rental-section-heading h2 { max-width: 560px; font-size: clamp(2.1rem, 3.5vw, 3.4rem); font-weight: 500; }
+.rental-section-heading > p { max-width: 390px; color: var(--text-secondary); font-size: .96rem; line-height: 1.85; }
+.rental-steps { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: var(--bg-card); overflow: hidden; }
+.rental-step { min-height: 255px; padding: 34px 35px; position: relative; }
+.rental-step + .rental-step { border-left: 1px solid var(--border-light); }
+.rental-step-number { color: var(--accent); font-size: .8rem; font-weight: 700; letter-spacing: .08em; }
+.rental-step-icon { position: absolute; top: 26px; right: 32px; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: var(--brand-mid); background: var(--bg-secondary); font-size: 1.25rem; }
+.rental-step h3 { margin-top: 52px; margin-bottom: 10px; font-size: 1.25rem; font-weight: 500; }
+.rental-step p { max-width: 290px; color: var(--text-secondary); font-size: .87rem; line-height: 1.75; }
+.rental-gallery { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 14px; margin-top: 32px; }
+.rental-gallery a { display: block; height: 260px; overflow: hidden; border-radius: var(--radius-md); background: var(--bg-secondary); }
+.rental-gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition); }
+.rental-gallery a:hover img { transform: scale(1.04); }
+.rental-gallery-note { margin-top: 10px; color: var(--text-muted); font-size: .75rem; }
+.rental-contact { display: flex; align-items: center; justify-content: space-between; gap: 30px; margin-bottom: 100px; padding: 48px 56px; border-radius: var(--radius-lg); background: var(--brand-dark); color: #fff; }
+.rental-contact .kicker { color: #e1c78d; }
+.rental-contact h2 { margin-bottom: 10px; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 500; }
+.rental-contact p { color: #c8d8d0; font-size: .9rem; }
+.rental-contact-button { flex-shrink: 0; display: inline-flex; justify-content: space-between; align-items: center; gap: 38px; min-width: 230px; padding: 16px 20px; border-radius: var(--radius-sm); background: var(--accent); color: #fff; font-weight: 700; }
+.bike-booking-section { scroll-margin-top: 100px; padding-bottom: 100px; }
+.bike-booking-heading { max-width: 620px; margin-bottom: 36px; }
+.bike-booking-heading h2 { font-size: clamp(2rem, 3.5vw, 3.4rem); font-weight: 500; }
+.bike-booking-heading p { margin-top: 15px; color: var(--text-secondary); line-height: 1.8; }
+.bike-booking-form { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 24px; }
+.bike-booking-panel { padding: 32px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.bike-booking-panel h3 { display: flex; gap: 14px; align-items: center; margin-bottom: 25px; font-size: 1.3rem; font-weight: 500; }
+.bike-booking-panel h3 span { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; background: var(--accent-light); color: var(--accent-hover); font: 700 .75rem 'Inter', sans-serif; }
+.bike-booking-panel .form-grid { grid-template-columns: 1fr 1fr; }
+.bike-check-button { margin-top: 22px; margin-bottom: 16px; }
+.bike-booking-panel .form-success, .bike-booking-panel .form-error { margin-top: 4px; }
+.bike-booking-price-note { margin: 20px 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.7; }
+.bike-submit-button { width: 100%; }
+.bike-booking-success { padding: 42px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); }
+.bike-booking-success-mark { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--success-bg); color: var(--success); font-size: 1.5rem; }
+.bike-booking-success h3 { margin: 16px 0; font-size: 1.7rem; }
+.bike-booking-success p { margin-top: 8px; color: var(--text-secondary); }
+.bike-booking-codes { overflow-wrap: anywhere; font-size: .85rem; }
 .services-page { padding: 80px 0; }
 .services-full-grid { display: grid; gap: 40px; }
 .service-full-card {
@@ -603,7 +664,8 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 .page-hero-content p { max-width: 500px; margin-inline: auto; color: #b5c8c2; font-size: 1rem; }
 .rooms-hero { background-image: url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=2000&q=85'); }
 .booking-hero { background-image: url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=2000&q=85'); }
-.services-hero { background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=2000&q=85'); }
+.services-hero { background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=2000&q=85'); }
+.service-full-body .btn-primary { align-self: flex-start; margin-top: 24px; }
 .contact-hero { background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=2000&q=85'); }
 .payment-hero { background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=2000&q=85'); }
 .page-content { padding-top: 0; }
@@ -699,6 +761,9 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 .summary-total strong { color: var(--accent-hover); font-size: 1.2rem; }
 .form-error { padding: 12px; background: var(--error-bg); color: var(--error); border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 12px; }
 .form-success { padding: 12px; background: var(--success-bg); color: var(--success); border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 12px; }
+.availability-check { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+.availability-check .form-error, .availability-check .form-success { margin: 0; }
+.booking-room-count { margin-top: 18px; }
 
 /* ── Booking Success ── */
 .booking-success { min-height: 80vh; display: grid; place-items: center; padding: 100px 24px; }
@@ -711,6 +776,11 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 
 /* ── Payment Page ── */
 .payment-page { padding: 60px 0 100px; max-width: 600px; margin-inline: auto; }
+.payment-page .booking-summary { position: static; }
+.payment-page h2 { margin-bottom: 12px; }
+.payment-booking-id { overflow-wrap: anywhere; font-weight: 700; color: var(--accent-hover); margin-bottom: 24px; }
+.payment-help { color: var(--text-secondary); margin-bottom: 24px; }
+.payment-back-link { display: inline-block; margin-top: 20px; }
 .payment-methods h2 { font-size: 1.3rem; font-weight: 500; margin-bottom: 24px; }
 .method-grid { display: grid; gap: 16px; margin-bottom: 28px; }
 .method-card {
@@ -767,6 +837,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 .contact-item a { color: var(--accent); }
 .contact-item a:hover { text-decoration: underline; }
 .contact-map { border-radius: var(--radius-lg); overflow: hidden; }
+.map-open-link { display: inline-block; margin: 10px 0 2px; color: var(--accent-hover); font-weight: 700; }
 .contact-form { padding: 36px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); }
 .contact-form h2 { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 24px; }
 .contact-form label { display: grid; gap: 6px; margin-bottom: 16px; }
@@ -864,6 +935,11 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
   transition: all var(--transition);
 }
 .social-icon:hover { background: var(--accent); border-color: var(--accent); color: white; }
+.facebook-button { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; overflow: hidden; padding: 10px 15px; border: 1px solid #0163e0; border-radius: 25px; color: #2d8cff; font-size: 1rem; font-weight: 600; line-height: 1; transition: color .3s ease-out; }
+.facebook-button::before { content: ''; position: absolute; z-index: -1; width: 220px; height: 220px; top: 50%; left: 50%; border-radius: 50%; background: #0163e0; transform: translate(-50%, -50%) scale(0); transition: transform .5s ease-out; }
+.facebook-button:hover::before, .facebook-button:focus-visible::before { transform: translate(-50%, -50%) scale(1); }
+.facebook-button:hover, .facebook-button:focus-visible { color: #fff; }
+.facebook-button svg { flex-shrink: 0; }
 .footer-bottom {
   text-align: center;
   padding: 20px;
@@ -1015,11 +1091,12 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-  .site-nav { position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; flex-direction: column; gap: 0; padding: 100px 30px; background: var(--bg-card); color: var(--text-primary); box-shadow: var(--shadow-lg); transition: right var(--transition); z-index: 99; }
+  .site-nav { position: fixed; top: 0; left: auto; right: -100%; transform: none; width: min(300px, 100vw); height: 100vh; flex-direction: column; gap: 0; padding: 100px 30px; background: var(--bg-card); color: var(--text-primary); box-shadow: var(--shadow-lg); transition: right var(--transition); z-index: 99; }
   .site-nav.open { right: 0; }
   .site-nav a { padding: 14px 0; border-bottom: 1px solid var(--border-light); font-size: 1rem; }
   .site-nav a::after { display: none; }
-  .mobile-menu-btn { display: block; }
+  .header-actions { order: 1; margin-left: auto; }
+  .mobile-menu-btn { display: block; order: 2; margin-left: 12px; z-index: 100; }
   .header-book-btn { display: none; }
   .register-link { display: none; }
   .about-section { grid-template-columns: 1fr; gap: 40px; }
@@ -1038,6 +1115,24 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 }
 
 @media (max-width: 768px) {
+  .rental-gallery { grid-template-columns: 1fr 1fr; }
+  .rental-gallery a { height: 210px; }
+  .rental-gallery a:last-child { grid-column: 1 / -1; }
+  .home-rental-feature { grid-template-columns: 1fr; }
+  .home-rental-photo { min-height: 280px; }
+  .bike-booking-form { grid-template-columns: 1fr; }
+  .bike-booking-section { padding-bottom: 64px; }
+  .rental-hero { min-height: 660px; align-items: flex-end; }
+  .rental-hero-photo { inset: 0; background-position: 55% center; }
+  .rental-hero::after { background: linear-gradient(0deg, #173d34 0%, rgba(23,61,52,.93) 42%, rgba(23,61,52,.28) 100%); }
+  .rental-hero-inner { padding-top: 180px; padding-bottom: 44px; }
+  .rental-hero-caption { margin-top: 50px; }
+  .rental-intro { padding-top: 72px; padding-bottom: 64px; }
+  .rental-section-heading { grid-template-columns: 1fr; gap: 20px; }
+  .rental-steps { grid-template-columns: 1fr; }
+  .rental-step { min-height: 0; }
+  .rental-step + .rental-step { border-left: 0; border-top: 1px solid var(--border-light); }
+  .rental-contact { flex-direction: column; align-items: flex-start; padding: 36px 28px; margin-bottom: 64px; }
   .hero-section { min-height: 85vh; padding: 120px 24px 80px; }
   .hero-badge { display: none; }
   .booking-bar { grid-template-columns: 1fr; }
@@ -1058,6 +1153,14 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; 
 }
 
 @media (max-width: 480px) {
+  .rental-gallery { grid-template-columns: 1fr; }
+  .rental-gallery a { height: 240px; }
+  .rental-gallery a:last-child { grid-column: auto; }
+  .bike-booking-panel { padding: 24px; }
+  .bike-booking-panel .form-grid { grid-template-columns: 1fr; }
+  .rental-hero h1 { font-size: 2.8rem; }
+  .rental-hero-actions { gap: 20px; }
+  .rental-contact-button { width: 100%; }
   .hero-content h1 { font-size: 2.4rem; }
   .about-stats { flex-wrap: wrap; gap: 20px; }
   .service-grid { grid-template-columns: 1fr; }

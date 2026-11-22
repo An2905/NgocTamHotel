@@ -1,41 +1,37 @@
 package ngoctamhotel.ngoctamhotel.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
 import ngoctamhotel.ngoctamhotel.dto.request.PaymentRequest;
 import ngoctamhotel.ngoctamhotel.dto.response.PaymentResponse;
 import ngoctamhotel.ngoctamhotel.service.PaymentService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
-    private final PaymentService paymentService;
 
-    public PaymentController(PaymentService paymentService) {
+    private final PaymentService paymentService;
+    private final ngoctamhotel.ngoctamhotel.service.PaymentLifecycleService lifecycle;
+
+    public PaymentController(PaymentService paymentService, ngoctamhotel.ngoctamhotel.service.PaymentLifecycleService lifecycle) {
         this.paymentService = paymentService;
+        this.lifecycle = lifecycle;
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PaymentResponse createPayment(@Valid @RequestBody PaymentRequest request) {
-        return paymentService.createPayment(request.bookingId(), request.method());
+    public PaymentResponse createPayment(@RequestBody PaymentRequest request) {
+        return paymentService.createPayment(request);
     }
 
-    @PutMapping("/{bookingId}/confirm")
-    public PaymentResponse confirmPayment(@PathVariable Long bookingId) {
-        return paymentService.confirmPayment(bookingId);
+    @org.springframework.web.bind.annotation.GetMapping("/booking/{bookingId}")
+    public java.util.Map<String,Object> status(@org.springframework.web.bind.annotation.PathVariable java.util.UUID bookingId) {
+        return lifecycle.status(bookingId);
     }
 
-    @PutMapping("/{bookingId}/fail")
-    public PaymentResponse failPayment(@PathVariable Long bookingId) {
-        return paymentService.failPayment(bookingId);
+    @PostMapping("/webhook")
+    public void webhook(@RequestBody vn.payos.model.webhooks.Webhook webhook) {
+        lifecycle.webhook(webhook);
     }
 }

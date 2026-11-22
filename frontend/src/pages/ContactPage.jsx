@@ -3,6 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { apiRequest } from '../api/client.js';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
+import { HOTEL_EMAIL, HOTEL_MAP_EMBED_URL, HOTEL_MAP_URL, HOTEL_PHONE } from '../config/contact.js';
 
 export default function ContactPage() {
   const { t } = useLanguage();
@@ -64,14 +65,14 @@ export default function ContactPage() {
                   <span className="contact-icon">📞</span>
                   <div>
                     <h4>{t('contact_hotline')}</h4>
-                    <p><a href="tel:+842973846000">{t('contact_hotline_value')}</a></p>
+                    <p><a href={`tel:${HOTEL_PHONE}`}>{t('contact_hotline_value')}</a></p>
                   </div>
                 </div>
                 <div className="contact-item">
                   <span className="contact-icon">✉️</span>
                   <div>
                     <h4>{t('contact_email')}</h4>
-                    <p><a href="mailto:info@ngoctamhotel.vn">{t('contact_email_value')}</a></p>
+                    <p><a href={`mailto:${HOTEL_EMAIL}`}>{t('contact_email_value')}</a></p>
                   </div>
                 </div>
               </div>
@@ -79,8 +80,8 @@ export default function ContactPage() {
               {/* Google Maps */}
               <div className="contact-map">
                 <iframe
-                  title="Ngọc Tâm Hotel Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6!2d103.96!3d10.22!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDEzJzEyLjAiTiAxMDPCsDU3JzM2LjAiRQ!5e0!3m2!1svi!2s!4v1"
+                  title={t('contact_map_title')}
+                  src={HOTEL_MAP_EMBED_URL}
                   width="100%"
                   height="300"
                   style={{ border: 0, borderRadius: '12px' }}
@@ -88,6 +89,9 @@ export default function ContactPage() {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
+                <a className="map-open-link" href={HOTEL_MAP_URL} target="_blank" rel="noopener noreferrer">
+                  {t('contact_open_map')}
+                </a>
               </div>
             </div>
 

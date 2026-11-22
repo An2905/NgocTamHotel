@@ -28,8 +28,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Auth — đăng nhập / đăng ký
-                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/admin/login").permitAll()
+                        // Khách không cần tài khoản vẫn xem, kiểm tra và tạo booking.
+                        .requestMatchers(HttpMethod.GET, "/api/rooms", "/api/check-rooms-booking").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/new-booking").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/room-holds").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/room-holds/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/bikes", "/api/bikes/availability").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/bike-bookings").permitAll()
                         // Rooms — CHỈ cho phép xem (GET)
                         .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
                         // Bookings — chỉ cho tạo (POST) + tra cứu (GET)
@@ -37,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/bookings/**").permitAll()
                         // Payments — tạo (POST) + xác nhận/thất bại (mô phỏng cổng thanh toán)
                         .requestMatchers(HttpMethod.POST, "/api/payments").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/payments/webhook").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payments/booking/*").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/payments/*/confirm").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/payments/*/fail").permitAll()
                         // Contact — gửi liên hệ

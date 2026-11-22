@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { useTheme } from '../contexts/ThemeContext.jsx';
-import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function Navbar() {
   const { t, lang, switchLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -62,19 +60,6 @@ export default function Navbar() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'light' ? t('theme_dark') : t('theme_light')}>
           {theme === 'light' ? '🌙' : '☀️'}
         </button>
-
-        {isAuthenticated ? (
-          <div className="user-menu">
-            <span className="user-name">{user?.username}</span>
-            {isAdmin && <Link to="/admin" className="admin-link">{t('nav_admin')}</Link>}
-            <button className="logout-btn" onClick={logout}>{t('nav_logout')}</button>
-          </div>
-        ) : (
-          <div className="auth-links">
-            <Link to="/login" className="login-link">{t('nav_login')}</Link>
-            <Link to="/register" className="register-link">{t('nav_register')}</Link>
-          </div>
-        )}
 
         <Link to="/booking" className="header-book-btn">{t('nav_booking')}</Link>
       </div>
