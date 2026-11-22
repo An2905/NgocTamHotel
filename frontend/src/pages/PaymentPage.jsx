@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { apiRequest } from '../api/client.js';
@@ -11,6 +11,26 @@ export default function PaymentPage() {
   const { t } = useLanguage();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
+  const [status, setStatus] = useState(null);
+  const [refresh, setRefresh] = useState(0);
+  useEffect(() => {
+    if (!bookingId) return undefined;
+    let stopped = false;
+    let timer;
+    let attempts = 0;
+    async function poll() {
+      try {
+        const result = await apiRequest('/payments/booking/' + bookingId);
+        if (stopped) return;
+        setStatus(result);
+        setError('');
+        if (result.bookingStatus === 'PENDING' && ++attempts < 30)
+          timer = setTimeout(poll, 2000);
+      } catch (err) { if (!stopped) setError(err.message); }
+    }
+    poll();
+    return () => { stopped = true; clearTimeout(timer); };
+  }, [bookingId, refresh]);
   const returnedFromGateway = searchParams.has('code') || searchParams.has('status');
 
   async function handlePay() {
@@ -49,17 +69,24 @@ export default function PaymentPage() {
           <div className="booking-summary">
             <h2>{t('payment_booking_title')}</h2>
             <p className="payment-booking-id">{bookingId}</p>
-            {returnedFromGateway ? (
-              <p className="form-success">{t('payment_pending_verification')}</p>
+            {status?.bookingStatus === 'CONFIRMED' ? (
+              <p className="form-success">{t('payment_success')}</p>
+            ) : status?.bookingStatus === 'CANCELLED' ? (
+              <p className="form-error">{t('payment_booking_expired')}</p>
             ) : (
               <>
-                <p className="payment-help">{t('payment_payos_desc')}</p>
-                {error && <p className="form-error">{error}</p>}
-                <button type="button" className="btn-primary full" onClick={handlePay} disabled={processing || !bookingId}>
+                <p className="payment-help">{returnedFromGateway || status?.needsReview
+                  ? t('payment_pending_verification') : t('payment_payos_desc')}</p>
+                <button type="button" className="btn-primary full" onClick={handlePay}
+                  disabled={processing || !status?.canPay}>
                   {processing ? t('payment_processing') : t('payment_pay_payos')}
                 </button>
               </>
             )}
+            {error && <p className="form-error">{error}</p>}
+            <button type="button" className="btn-outline" onClick={() => setRefresh(n => n + 1)}>
+              {t('payment_check_status')}
+            </button>
             <Link to="/" className="payment-back-link">{t('booking_back_home')}</Link>
           </div>
         </section>

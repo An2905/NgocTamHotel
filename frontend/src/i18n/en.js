@@ -180,6 +180,8 @@ const en = {
   booking_error_required: 'Please fill in all required fields',
 
   // Payment
+  payment_booking_expired: 'Booking expired or cancelled.',
+  payment_check_status: 'Check status',
   payment_title: 'Payment',
   payment_subtitle: 'Pay for your booking with PayOS',
   payment_booking_title: 'Booking ID',

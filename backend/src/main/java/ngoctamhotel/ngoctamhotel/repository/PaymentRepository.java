@@ -65,8 +65,9 @@ public class PaymentRepository {
 
     public void saveLink(Payment payment) {
         int updated = jdbc.update("""
-                UPDATE payments SET payos_payment_link_id = ?, checkout_url = ?, payment_status = 'UNPAID'
-                WHERE id = ? AND payment_status = 'PROCESSING'
+                UPDATE payments SET payos_payment_link_id = ?, checkout_url = ?,
+                    payment_status = CASE WHEN payment_status = 'PROCESSING' THEN 'UNPAID' ELSE payment_status END
+                WHERE id = ? AND payment_status IN ('PROCESSING', 'UNPAID', 'PAID')
                 """, payment.getPayosPaymentLinkId(), payment.getCheckoutUrl(), payment.getId().toString());
         if (updated != 1) throw new IllegalStateException("Không thể cập nhật link payment");
     }

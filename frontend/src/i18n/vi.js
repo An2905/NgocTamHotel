@@ -180,6 +180,8 @@ const vi = {
   booking_error_required: 'Vui lòng điền đầy đủ thông tin bắt buộc',
 
   // Payment
+  payment_booking_expired: 'Booking đã hết hạn hoặc đã hủy.',
+  payment_check_status: 'Kiểm tra trạng thái',
   payment_title: 'Thanh toán',
   payment_subtitle: 'Thanh toán đơn đặt phòng qua PayOS',
   payment_booking_title: 'Mã đặt phòng',

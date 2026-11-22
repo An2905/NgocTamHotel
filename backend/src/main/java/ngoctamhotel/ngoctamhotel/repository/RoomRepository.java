@@ -41,7 +41,7 @@ public class RoomRepository {
                       JOIN room_bookings b ON b.id = br.booking_id
                       WHERE br.room_id = r.id
                         AND (b.room_booking_status IN ('CONFIRMED', 'CHECKED_IN')
-                          OR (b.room_booking_status = 'PENDING' AND b.payment_deadline > NOW()))
+                          OR (b.room_booking_status = 'PENDING'))
                         AND b.check_in_date < ?
                         AND b.check_out_date > ?
                   )
@@ -91,7 +91,7 @@ public class RoomRepository {
                   JOIN room_bookings b ON b.id = br.booking_id
                   WHERE br.room_id = r.id
                     AND (b.room_booking_status IN ('CONFIRMED', 'CHECKED_IN')
-                      OR (b.room_booking_status = 'PENDING' AND b.payment_deadline > NOW()))
+                      OR (b.room_booking_status = 'PENDING'))
                     AND b.check_in_date < ?
                     AND b.check_out_date > ?
               )

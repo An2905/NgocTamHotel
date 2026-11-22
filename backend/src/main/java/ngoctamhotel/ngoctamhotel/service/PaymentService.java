@@ -21,11 +21,13 @@ public class PaymentService {
     private final PaymentRepository repo;
     private final PayOSService payOS;
     private final TransactionTemplate transaction;
+    private final PaymentLifecycleService lifecycle;
 
-    public PaymentService(PaymentRepository repo, PayOSService payOS, TransactionTemplate transaction) {
+    public PaymentService(PaymentRepository repo, PayOSService payOS, TransactionTemplate transaction, PaymentLifecycleService lifecycle) {
         this.repo = repo;
         this.payOS = payOS;
         this.transaction = transaction;
+        this.lifecycle = lifecycle;
     }
 
     public PaymentResponse createPayment(PaymentRequest request) {
@@ -34,13 +36,14 @@ public class PaymentService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Thông tin thanh toán không hợp lệ");
         }
         payOS.checkConfigured();
+        lifecycle.reconcile(request.bookingId());
         // Transaction ngắn: khóa booking, chọn/tạo payment rồi COMMIT trước khi gọi mạng.
         Payment payment = transaction.execute(status -> reservePayment(request.bookingId()));
         if (payment == null) throw new IllegalStateException("Không tạo được payment");
         if (payment.getCheckoutUrl() != null) return response(payment);
 
         try {
-            var link = payOS.createLink(payment);
+            var link = payOS.createLink(payment, lifecycle.deadline(payment.getBookingId()));
             if (link == null || link.getPaymentLinkId() == null || link.getCheckoutUrl() == null
                     || !link.getCheckoutUrl().startsWith("https://")) {
                 throw new IllegalStateException("PayOS chưa trả link thanh toán hợp lệ");

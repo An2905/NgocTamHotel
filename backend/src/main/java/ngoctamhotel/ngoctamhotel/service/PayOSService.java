@@ -31,7 +31,7 @@ public class PayOSService {
                 HttpStatus.SERVICE_UNAVAILABLE, "Chưa cấu hình khóa PayOS");
     }
 
-    public CreatePaymentLinkResponse createLink(Payment payment) {
+    public CreatePaymentLinkResponse createLink(Payment payment, long deadline) {
         checkConfigured();
         String page = frontendUrl + "/payment/" + payment.getBookingId();
         // Builder chỉ tạo dữ liệu gửi đi. amount là tiền cọc BE đã xác định.
@@ -39,8 +39,24 @@ public class PayOSService {
                 .orderCode(payment.getPayosOrderCode())
                 .amount(payment.getAmountVnd().longValueExact())
                 .description("Coc phong")
+                .expiredAt(deadline)
                 .returnUrl(page).cancelUrl(page).build();
         // ĐÂY là lệnh gọi mạng tới PayOS; response chứa paymentLinkId và checkoutUrl.
         return client.paymentRequests().create(request);
+    }
+
+    public vn.payos.model.v2.paymentRequests.PaymentLink lookup(Long code) {
+        checkConfigured();
+        return client.paymentRequests().get(code);
+    }
+
+    public vn.payos.model.v2.paymentRequests.PaymentLink cancel(Long code) {
+        checkConfigured();
+        return client.paymentRequests().cancel(code, "Booking deadline or checkout recovery");
+    }
+
+    public vn.payos.model.webhooks.WebhookData verify(vn.payos.model.webhooks.Webhook webhook) {
+        checkConfigured();
+        return client.webhooks().verify(webhook);
     }
 }

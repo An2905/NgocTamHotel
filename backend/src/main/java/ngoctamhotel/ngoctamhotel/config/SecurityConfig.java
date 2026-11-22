@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/bookings/**").permitAll()
                         // Payments — tạo (POST) + xác nhận/thất bại (mô phỏng cổng thanh toán)
                         .requestMatchers(HttpMethod.POST, "/api/payments").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/payments/webhook").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payments/booking/*").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/payments/*/confirm").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/payments/*/fail").permitAll()
                         // Contact — gửi liên hệ
