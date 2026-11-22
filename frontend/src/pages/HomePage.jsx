@@ -5,10 +5,10 @@ import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 
 const ROOM_IMAGES = [
-  { id: 1, name: 'Phòng Đơn', price: '350.000', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=900&q=80', guests: 1 },
-  { id: 2, name: 'Phòng Đôi Thường', price: '550.000', img: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80', guests: 2 },
-  { id: 3, name: 'Phòng Đôi View Biển', price: '600.000', img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80', guests: 2 },
-  { id: 4, name: 'Phòng Ba', price: '750.000', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80', guests: 3 },
+  { id: 1, name: 'Phòng Đơn', price: '350.000', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=900&q=80', guests: 3 },
+  { id: 2, name: 'Phòng Đôi Thường', price: '550.000', img: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80', guests: 6 },
+  { id: 3, name: 'Phòng Đôi View Biển', price: '600.000', img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80', guests: 6 },
+  { id: 4, name: 'Phòng Ba', price: '750.000', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80', guests: 9 },
 ];
 
 export default function HomePage() {
@@ -105,8 +105,7 @@ export default function HomePage() {
                     <div className="room-card-footer">
                       <p className="room-price">{t('rooms_from')} <strong>{room.price}đ</strong> {t('rooms_per_night')}</p>
                       <div className="room-card-actions">
-                        <Link to={`/rooms/${room.id}`} className="btn-outline">{t('rooms_view_detail')}</Link>
-                        <Link to={`/booking?roomType=${room.id}`} className="btn-primary small">{t('rooms_book_now')}</Link>
+                        <Link to="/booking" className="btn-primary small">{t('rooms_book_now')}</Link>
                       </div>
                     </div>
                   </div>
@@ -122,24 +121,14 @@ export default function HomePage() {
             <p className="kicker accent">{t('services_kicker')}</p>
             <h2>{t('services_title')}</h2>
           </div>
-          <div className="service-grid">
-            {[
-              { num: '01', key: 'motorbike', icon: '🏍️' },
-              { num: '02', key: 'electric_cart', icon: '🚗' },
-              { num: '03', key: 'camping', icon: '🔥' },
-              { num: '04', key: 'party', icon: '🎉' },
-              { num: '05', key: 'food', icon: '🍽️' },
-            ].map(svc => (
-              <article className="service-card" key={svc.num}>
-                <span className="service-icon">{svc.icon}</span>
-                <span className="service-num">{svc.num}</span>
-                <h3>{t(`service_${svc.key}`)}</h3>
-                <p>{t(`service_${svc.key}_desc`)}</p>
-              </article>
-            ))}
-          </div>
-          <div className="services-cta">
-            <Link to="/services" className="btn-outline">{t('nav_services')}</Link>
+          <div className="home-rental-feature">
+            <div className="home-rental-photo" role="img" aria-label={t('service_motorbike')} />
+            <div className="home-rental-copy">
+              <span className="kicker accent">{t('service_rental_section_kicker')}</span>
+              <h3>{t('service_rental_section_title')}</h3>
+              <p>{t('service_motorbike_desc')}</p>
+              <Link to="/services" className="btn-primary">{t('service_rental_book_online')} <span aria-hidden="true">→</span></Link>
+            </div>
           </div>
         </section>
 

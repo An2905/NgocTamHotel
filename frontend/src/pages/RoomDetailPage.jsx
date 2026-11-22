@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
-import { apiRequest } from '../api/client.js';
+import { roomRequest } from '../api/client.js';
+import { normalizeRoomCategory } from '../api/roomCategories.js';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 
@@ -40,9 +41,10 @@ export default function RoomDetailPage() {
   const [activeImg, setActiveImg] = useState(0);
 
   useEffect(() => {
-    apiRequest(`/rooms/${id}`)
+    roomRequest('/rooms')
       .then(data => {
-        setRoom(data);
+        const category = data.find(item => String(item.id) === String(id));
+        setRoom(category ? normalizeRoomCategory(category) : null);
         setActiveImg(0);
       })
       .catch(() => setRoom(null))
@@ -110,11 +112,7 @@ export default function RoomDetailPage() {
               <div className="booking-card-info">
                 <div className="info-row">
                   <span>Sức chứa</span>
-                  <strong>{room.maxAdults} người lớn, {room.maxChildren} trẻ em</strong>
-                </div>
-                <div className="info-row">
-                  <span>Phòng trống</span>
-                  <strong>{room.availableRooms}/{room.totalRooms}</strong>
+                  <strong>{room.maxAdults} khách</strong>
                 </div>
               </div>
               <Link to={`/booking?roomType=${room.id}`} className="btn-primary full">{t('room_detail_book')}</Link>

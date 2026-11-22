@@ -1,0 +1,17 @@
+loại phòng:
+* Phòng đơn: 350.000đ/phòng
+* Phòng đôi:
+
+  * Phòng thường: 550.000đ/phòng
+  * Phòng view biển: 600.000đ/phòng
+* Phòng ba (3 giường): 750.000đ/phòng
+
+Mô tả: AI viết
+Số lương:
+* 1 giường 2 người lớn + 1 trẻ em dưới 10 tuổi
+Tiện nghi:
+* Có bàn ăn uống, nhà vệ sinh có nước nóng lạnh
+* Máy sấy tóc, ấm đun nước mượn dưới quay lễ tân
+* Phòng đơn sẽ có 2 nước lọc miễn phí, phòng đôi 4 chai,...
+
+User gửi thông tin tên, sdt, mail sau đó thanh toán tiền cọc 100k, hoá đơn sẽ được gửi qua gmail
