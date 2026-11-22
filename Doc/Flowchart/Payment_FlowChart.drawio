@@ -1,0 +1,304 @@
+<mxfile host="Electron">
+  <diagram id="payment-flow" name="Payment Flow">
+    <mxGraphModel dx="7521" dy="3540" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4400" pageHeight="1540" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#eeeeee;strokeColor=#666666;" value="PAYMENT — từ booking PENDING đến xác nhận tiền cọc" vertex="1">
+          <mxGeometry height="58" width="960" x="80" y="-300" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="1" style="ellipse;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="BẮT ĐẦU: Booking PENDING được tạo, có paymentDeadline" vertex="1">
+          <mxGeometry height="100" width="210" x="-450" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="check_booking" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE: kiểm tra booking PENDING và paymentDeadline còn hạn" vertex="1">
+          <mxGeometry height="100" width="240" x="310" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="valid_booking" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#f8cecc;strokeColor=#b85450;" value="Booking còn hạn?" vertex="1">
+          <mxGeometry height="90" width="155" x="610" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="expired_before" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="FE: booking đã hết hạn; không tạo payment" vertex="1">
+          <mxGeometry height="80" width="220" x="577.5" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="find_payment" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE: tìm payment / link đang hoạt động của booking" vertex="1">
+          <mxGeometry height="100" width="230" x="820" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="usable" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#f8cecc;strokeColor=#b85450;" value="Link còn dùng được?" vertex="1">
+          <mxGeometry height="90" width="165" x="1110" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="create_payment" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE: tạo payment, DB cấp orderCode; dùng tiền cọc do BE xác định" vertex="1">
+          <mxGeometry height="110" width="250" x="1067.5" y="-120" as="geometry" />
+        </mxCell>
+        <mxCell id="create_link" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE gọi API PayOS tạo link; đặt expiredAt không vượt paymentDeadline" vertex="1">
+          <mxGeometry height="110" width="250" x="1620" y="-120" as="geometry" />
+        </mxCell>
+        <mxCell id="link_ok" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#f8cecc;strokeColor=#b85450;" value="Nhận link hợp lệ?" vertex="1">
+          <mxGeometry height="90" width="165" x="1942.5" y="-110" as="geometry" />
+        </mxCell>
+        <mxCell id="reconcile_create" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="BE: kết quả tạo link chưa rõ → tra cứu theo orderCode; chưa tạo mã mới" vertex="1">
+          <mxGeometry height="100" width="250" x="1900" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="save_link" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE lưu paymentLinkId và checkoutUrl" vertex="1">
+          <mxGeometry height="90" width="220" x="2200" y="-110" as="geometry" />
+        </mxCell>
+        <mxCell id="redirect" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE mở checkoutUrl" vertex="1">
+          <mxGeometry height="90" width="190" x="2450" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="pay_page" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="PayOS: khách thanh toán hoặc rời trang" vertex="1">
+          <mxGeometry height="90" width="230" x="2690" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="webhook" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="PayOS gửi webhook tới BE" vertex="1">
+          <mxGeometry height="85" width="220" x="3010" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="verify" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE xác minh chữ ký; đối chiếu orderCode, linkId, số tiền và booking" vertex="1">
+          <mxGeometry height="110" width="260" x="3290" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="verified" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#f8cecc;strokeColor=#b85450;" value="Giao dịch PAID hợp lệ?" vertex="1">
+          <mxGeometry height="90" width="190" x="3610" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="commit_paid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="BE cập nhật Payment PAID + Booking CONFIRMED trong cùng transaction (idempotent)" vertex="1">
+          <mxGeometry height="120" width="280" x="3850" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="unverified" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="BE giữ trạng thái chờ đối soát; không xác nhận hoặc hủy booking" vertex="1">
+          <mxGeometry height="105" width="280" x="3850" y="405" as="geometry" />
+        </mxCell>
+        <mxCell id="browser_return" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="Trình duyệt có thể về returnUrl / cancelUrl; cũng có thể đóng tab" vertex="1">
+          <mxGeometry height="100" width="260" x="2970" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="fetch_status" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE hỏi BE trạng thái booking và payment" vertex="1">
+          <mxGeometry height="85" width="250" x="3300" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="status" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#f8cecc;strokeColor=#b85450;" value="Trạng thái BE trả?" vertex="1">
+          <mxGeometry height="95" width="190" x="3610" y="685" as="geometry" />
+        </mxCell>
+        <mxCell id="fe_paid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="FE hiển thị đã xác nhận" vertex="1">
+          <mxGeometry height="75" width="250" x="3850" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="fe_pending" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE hiển thị chờ / thử lại; polling ngắn có giới hạn" vertex="1">
+          <mxGeometry height="95" width="280" x="3850" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="fe_expired" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="FE hiển thị booking hết hạn" vertex="1">
+          <mxGeometry height="75" width="260" x="3850" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="no_browser" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#eeeeee;strokeColor=#666666;" value="Khách đóng tab: BE vẫn nhận webhook và xử lý hạn thanh toán" vertex="1">
+          <mxGeometry height="95" width="260" x="2970" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="deadline" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Đến paymentDeadline: BE kiểm tra các payment với PayOS" vertex="1">
+          <mxGeometry height="95" width="280" x="50" y="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="deadline_result" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#f8cecc;strokeColor=#b85450;" value="Kết quả đối soát?" vertex="1">
+          <mxGeometry height="95" width="185" x="390" y="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="deadline_paid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="Đã nhận cọc → xác nhận booking nếu còn hợp lệ; xử lý ngoại lệ nếu phòng đã nhả" vertex="1">
+          <mxGeometry height="110" width="300" x="650" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="deadline_unpaid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="Chắc chắn chưa nhận tiền → booking hết hạn, nhả phòng" vertex="1">
+          <mxGeometry height="100" width="280" x="650" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="deadline_unknown" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="Chưa rõ → tiếp tục đối soát / báo quản trị; chưa nhả phòng" vertex="1">
+          <mxGeometry height="100" width="280" x="650" y="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_1" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="click_pay" value="Khách chọn thanh toán">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_2" edge="1" parent="1" source="check_booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="valid_booking" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_3" edge="1" parent="1" source="valid_booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="expired_before" value="Không">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_4" edge="1" parent="1" source="valid_booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="find_payment" value="Có">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_5" edge="1" parent="1" source="find_payment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="usable" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_6" edge="1" parent="1" source="usable" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="redirect" value="Có: dùng lại link">
+          <mxGeometry relative="1" x="-0.1328" as="geometry">
+            <Array as="points">
+              <mxPoint x="1192.5" y="600" />
+              <mxPoint x="2545" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_7" edge="1" parent="1" source="usable" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="create_payment" value="Không, payment cũ đã kết thúc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_8" edge="1" parent="1" source="create_payment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="create_link" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_9" edge="1" parent="1" source="create_link" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="link_ok" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_10" edge="1" parent="1" source="link_ok" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="reconcile_create" value="Không / timeout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_11" edge="1" parent="1" source="link_ok" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="save_link" value="Có">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_12" edge="1" parent="1" source="save_link" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="redirect" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_13" edge="1" parent="1" source="redirect" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="pay_page" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_14" edge="1" parent="1" source="pay_page" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="webhook" value="Luồng server">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_15" edge="1" parent="1" source="webhook" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="verify" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_16" edge="1" parent="1" source="verify" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="verified" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_17" edge="1" parent="1" source="verified" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="commit_paid" value="Có">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_18" edge="1" parent="1" source="verified" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="unverified" value="Không / chưa rõ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_19" edge="1" parent="1" source="pay_page" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="browser_return" value="Luồng trình duyệt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_20" edge="1" parent="1" source="browser_return" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="fetch_status" value="Nếu quay về">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_21" edge="1" parent="1" source="browser_return" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="no_browser" value="Nếu đóng tab">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_22" edge="1" parent="1" source="fetch_status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="status" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_23" edge="1" parent="1" source="status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="fe_paid" value="CONFIRMED">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_24" edge="1" parent="1" source="status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="fe_pending" value="PENDING / đối soát">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_25" edge="1" parent="1" source="status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="fe_expired" value="Hết hạn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_26" edge="1" parent="1" source="deadline" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="deadline_result" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_27" edge="1" parent="1" source="deadline_result" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="deadline_paid" value="PAID">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_28" edge="1" parent="1" source="deadline_result" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="deadline_unpaid" value="Chưa trả">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_29" edge="1" parent="1" source="deadline_result" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="deadline_unknown" value="Chưa rõ">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="610" y="1237.5" />
+              <mxPoint x="610" y="1420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="create_unknown" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="Chưa đối soát được → payment PROCESSING; FE báo kiểm tra lại sau" vertex="1">
+          <mxGeometry height="100" width="250" x="1900" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_create_found" edge="1" parent="1" source="reconcile_create" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="save_link" value="Tìm thấy link hợp lệ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_create_unknown" edge="1" parent="1" source="reconcile_create" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="create_unknown" value="Vẫn chưa rõ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="retry" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="Khách chọn thử lại khi booking còn hạn" vertex="1">
+          <mxGeometry height="80" width="270" x="3850" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_pending_retry" edge="1" parent="1" source="fe_pending" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="retry" value="Link cũ đã kết thúc">
+          <mxGeometry relative="1" x="0.52" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_retry_start" edge="1" parent="1" source="retry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="check_booking" value="Gọi lại BE; kiểm tra payment cũ trước">
+          <mxGeometry relative="1" x="0.007" as="geometry">
+            <Array as="points">
+              <mxPoint x="3250" y="1100" />
+              <mxPoint x="3250" y="980" />
+              <mxPoint x="430" y="980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="click_pay" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE: khách bấm Thanh toán" vertex="1">
+          <mxGeometry height="80" width="240" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="deadline_trigger" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE: đến hạn thanh toán (chạy kể cả khi khách đóng trang)" vertex="1">
+          <mxGeometry height="100" width="280" x="-485" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="end_expired_before" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;ellipse;fillColor=#e1d5e7;strokeColor=#9673a6;" value="KẾT THÚC: booking đã hết hạn" vertex="1">
+          <mxGeometry height="80" width="240" x="860" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="end_paid_be" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;ellipse;fillColor=#e1d5e7;strokeColor=#9673a6;" value="KẾT THÚC BE: đã xác nhận cọc" vertex="1">
+          <mxGeometry height="85" width="250" x="4200" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="end_paid_fe" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;ellipse;fillColor=#e1d5e7;strokeColor=#9673a6;" value="KẾT THÚC FE: hiện thành công" vertex="1">
+          <mxGeometry height="85" width="250" x="4200" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="end_expired_fe" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;ellipse;fillColor=#e1d5e7;strokeColor=#9673a6;" value="KẾT THÚC FE: booking hết hạn" vertex="1">
+          <mxGeometry height="85" width="250" x="4200" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="late_payment" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="Tiền đến muộn khi phòng đã nhả: xử lý ngoại lệ / hoàn tiền" vertex="1">
+          <mxGeometry height="100" width="290" x="1090" y="1095" as="geometry" />
+        </mxCell>
+        <mxCell id="end_late" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;ellipse;fillColor=#e1d5e7;strokeColor=#9673a6;" value="KẾT THÚC" vertex="1">
+          <mxGeometry height="85" width="260" x="1105" y="1237.5" as="geometry" />
+        </mxCell>
+        <mxCell id="pending_ui" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE dừng polling sau giới hạn; hiện đang xác minh, có thể kiểm tra lại sau" vertex="1">
+          <mxGeometry height="105" width="280" x="4200" y="765" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_click_check" edge="1" parent="1" source="click_pay" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="check_booking" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_start_deadline" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="deadline_trigger" value="Đến paymentDeadline">
+          <mxGeometry relative="1" x="0.1013" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_trigger_check" edge="1" parent="1" source="deadline_trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="deadline" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_expired_before_end" edge="1" parent="1" source="expired_before" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="end_expired_before" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_commit_end" edge="1" parent="1" source="commit_paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="end_paid_be" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_fe_paid_end" edge="1" parent="1" source="fe_paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="end_paid_fe" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_fe_expired_end" edge="1" parent="1" source="fe_expired" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="end_expired_fe" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_deadline_unpaid_end" edge="1" parent="1" source="deadline_unpaid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="end_late" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="990" y="1280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fix_deadline_paid_commit" edge="1" parent="1" source="deadline_paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="commit_paid" value="Booking còn hợp lệ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_deadline_paid_late" edge="1" parent="1" source="deadline_paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="late_payment" value="Phòng đã nhả">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_late_end" edge="1" parent="1" source="late_payment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="end_late" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_unknown_retry" edge="1" parent="1" source="deadline_unknown" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;exitX=0.472;exitY=0.997;exitDx=0;exitDy=0;exitPerimeter=0;" target="deadline" value="Kiểm tra lại / báo quản trị">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_unverified_reconcile" edge="1" parent="1" source="unverified" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" target="deadline" value="Chờ đối soát">
+          <mxGeometry relative="1" x="0.0161" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_create_unknown_reconcile" edge="1" parent="1" source="create_unknown" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="deadline" value="Chờ đối soát">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_closed_webhook" edge="1" parent="1" source="no_browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="webhook" value="BE vẫn xử lý">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_pending_poll" edge="1" parent="1" source="fe_pending" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="fetch_status" value="Hỏi lại trong thời gian chờ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fix_pending_stop" edge="1" parent="1" source="fe_pending" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;strokeWidth=2;" target="pending_ui" value="Hết thời gian polling">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
-import { apiRequest } from '../api/client.js';
+import { roomRequest } from '../api/client.js';
+import { normalizeRoomCategory } from '../api/roomCategories.js';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 
@@ -13,13 +14,14 @@ export default function RoomsPage() {
   const { t } = useLanguage();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    apiRequest('/rooms')
-      .then(setRooms)
-      .catch(() => setRooms([]))
+    roomRequest('/rooms')
+      .then(data => setRooms(data.map(normalizeRoomCategory)))
+      .catch(() => setError(t('booking_rooms_unavailable')))
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   return (
     <div className="public-site">
@@ -38,6 +40,8 @@ export default function RoomsPage() {
         <section className="rooms-list container">
           {loading ? (
             <div className="loading-state"><p>{t('common_loading')}</p></div>
+          ) : error ? (
+            <div className="loading-state"><p>{error}</p></div>
           ) : (
             <div className="room-grid">
               {rooms.map(room => (

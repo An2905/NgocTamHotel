@@ -3,7 +3,6 @@ package ngoctamhotel.ngoctamhotel.security;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -29,12 +28,12 @@ public class JwtService {
         this.expirationSeconds = expirationSeconds;
     }
 
-    public String createToken(UUID userId, String username) {
+    public String createAdminToken(String username) {
         long issuedAt = Instant.now().getEpochSecond();
         long expiresAt = issuedAt + expirationSeconds;
         String header = encode("{\"alg\":\"HS256\",\"typ\":\"JWT\"}");
-        String payload = encode("{\"sub\":\"" + escape(username) + "\",\"uid\":\"" + userId
-                + "\",\"iat\":" + issuedAt + ",\"exp\":" + expiresAt + "}");
+        String payload = encode("{\"sub\":\"" + escape(username) + "\",\"token_use\":\"admin\""
+                + ",\"iat\":" + issuedAt + ",\"exp\":" + expiresAt + "}");
         String unsignedToken = header + "." + payload;
         return unsignedToken + "." + BASE64_URL.encodeToString(sign(unsignedToken));
     }
@@ -45,6 +44,9 @@ public class JwtService {
             throw new IllegalArgumentException("Token không hợp lệ");
         }
         String payload = new String(BASE64_URL_DECODER.decode(parts[1]), StandardCharsets.UTF_8);
+        if (!"admin".equals(extractJsonValue(payload, "token_use"))) {
+            throw new IllegalArgumentException("Token không dành cho admin");
+        }
         long expiration = Long.parseLong(extractJsonValue(payload, "exp"));
         if (Instant.now().getEpochSecond() >= expiration) {
             throw new IllegalArgumentException("Token đã hết hạn");
@@ -96,4 +98,3 @@ public class JwtService {
         return value.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 }
-

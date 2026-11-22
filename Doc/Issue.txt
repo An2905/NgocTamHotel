@@ -1,0 +1,11 @@
+##FIX
+- Trang đăng nhận không cần user
+- Chưa them hình thức thanh toán + API thanh toán, brevo and payos
+- Chưa them dịch vụ
+- Chưa test
+- Sửa booking, service như flowchart
+- Đặt phòng sẽ nhảy vào trang loại phòng để cho khách hang chọn trước
+- Update hình anh, tiện nghi (thêm icon tiện nghi) từng phòng. Ảnh trong phòng chưa phóng to và di chuyển trái phải
+- Thiếu thông tin liên hệ như sdt, mail, fb, ...
+- Thiếu logo
+- Chưa đem đánh giá từ gg map lên

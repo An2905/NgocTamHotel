@@ -7,12 +7,6 @@ export function login(credentials) {
   })
 }
 
-export function register(account) {
-  return apiRequest('/auth/register', {
-    method: 'POST',
-    body: JSON.stringify(account),
-  })
-}
 
 export function saveSession(auth) {
   sessionStorage.setItem('accessToken', auth.token)

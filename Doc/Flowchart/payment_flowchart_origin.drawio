@@ -1,0 +1,157 @@
+<mxfile host="Electron">
+  <diagram id="payment-flow-origin" name="Payment Flow (trước khi Codex sửa)">
+    <mxGraphModel dx="3121" dy="2000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4900" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="BẮT ĐẦU" vertex="1">
+          <mxGeometry height="70" width="130" x="40" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="customer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="Customer tiến hành thanh toán" vertex="1">
+          <mxGeometry height="75" width="190" x="215" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="send" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE gửi bookingId cho BE" vertex="1">
+          <mxGeometry height="75" width="190" x="455" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="check_booking" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE kiểm tra booking còn chờ cọc và chưa hết hạn, rồi lấy depositAmount do BE quản lý để tạo payment. (Số tiền cọc cố định 100.000VND)" vertex="1">
+          <mxGeometry height="115" width="255" x="700" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="create_payment" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE tạo payment gắn với booking" vertex="1">
+          <mxGeometry height="75" width="190" x="1010" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="create_request" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE tạo yêu cầu thanh toán PayOS" vertex="1">
+          <mxGeometry height="75" width="190" x="1250" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="payos_process" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="PayOS xử lý thông tin" vertex="1">
+          <mxGeometry height="75" width="185" x="1490" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="payos_return" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="PayOS trả paymentLinkId, checkoutUrl (kèm orderCode để đối chiếu)" vertex="1">
+          <mxGeometry height="90" width="210" x="1725" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE lưu thông tin" vertex="1">
+          <mxGeometry height="75" width="170" x="1985" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="url" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Trả URL về cho FE" vertex="1">
+          <mxGeometry height="75" width="170" x="2205" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="redirect" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE chuyển customer sang trang thanh toán của PayOS" vertex="1">
+          <mxGeometry height="90" width="210" x="2425" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="paying" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="Khách hàng tiến hành thanh toán" vertex="1">
+          <mxGeometry height="75" width="190" x="2685" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="outcome" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" value="Thanh toán thành công?" vertex="1">
+          <mxGeometry height="100" width="185" x="2925" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="webhook" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="PayOS gửi webhook; BE xác minh kết quả" vertex="1">
+          <mxGeometry height="85" width="210" x="3160" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="check_payment" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="BE kiểm tra payment" vertex="1">
+          <mxGeometry height="75" width="190" x="3430" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="paid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" value="Paid?" vertex="1">
+          <mxGeometry height="95" width="150" x="3680" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="confirmed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="Payment: PAID → Booking: CONFIRMED" vertex="1">
+          <mxGeometry height="85" width="245" x="3880" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="failed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="Thất bại hoặc quá thời gian" vertex="1">
+          <mxGeometry height="85" width="220" x="3890" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="cancel" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" value="BE huỷ Booking" vertex="1">
+          <mxGeometry height="75" width="190" x="4160" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="notify" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="Thông báo booking thất bại" vertex="1">
+          <mxGeometry height="75" width="210" x="4390" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="end" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="KẾT THÚC" vertex="1">
+          <mxGeometry height="70" width="130" x="4660" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="return_url" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" value="PayOS điều hướng khách hàng về page = returnUrl" vertex="1">
+          <mxGeometry height="90" width="210" x="3160" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="poll" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" value="FE liên tục gọi BE để kiểm tra trạng thái booking. 2s gọi 1 lần" vertex="1">
+          <mxGeometry height="100" width="235" x="3637.5" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="customer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="customer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="send" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="send" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="check_booking" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="check_booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="create_payment" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="create_payment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="create_request" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="create_request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="payos_process" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="payos_process" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="payos_return" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="payos_return" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="save" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="save" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="url" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="url" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="redirect" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="redirect" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="paying" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="paying" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="outcome" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="outcome" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="webhook" value="Có">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="webhook" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="check_payment" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="outcome" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="check_payment" value="Không">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="check_payment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="paid" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="confirmed" value="Đã thanh toán">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="confirmed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="end" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="failed" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="failed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="cancel" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="cancel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="notify" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="notify" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="end" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="outcome" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="return_url" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="return_url" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="poll" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="poll" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" target="check_payment" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" edge="1" parent="1" source="paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=13;" target="poll" value="PENDING">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
